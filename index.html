@@ -464,14 +464,30 @@
     // Gunakan alamat ngrok backend yang aktif.
     const API_URL = "https://fancied-velvet-revivable.ngrok-free.dev/api/chat";
 
-    function addMessage(text, type) {
-      const el = document.createElement("div");
-      el.className = "message " + type;
-      el.textContent = text;
-      messages.appendChild(el);
-      messages.scrollTop = messages.scrollHeight;
-      return el;
-    }
+    
+function addMessage(text, type) {
+  const el = document.createElement("div");
+  el.className = "message " + type;
+
+  el.textContent = text;
+  messages.appendChild(el);
+
+  if (type === "bot" && window.renderMathInElement) {
+    renderMathInElement(el, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\[", right: "\\]", display: true },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "$", right: "$", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+
+  messages.scrollTop = messages.scrollHeight;
+  return el;
+}
+
 
     async function sendMessage(text) {
       text = text.trim();
